@@ -19,11 +19,11 @@ HTML5 - CSS3 - JavaScript - LocalStorage
 
 <h1>Ürün Detay & Kategori Sayfaları</h1>
 
-<img src="e-ticaret site\gifler/detay.gif" class="img-fluid">
+<img src="e-ticaret site\gifler/login.gif" class="img-fluid">
 
 <h1>Kullanıcı Giriş - Kayıt Sistemi</h1>
 
-<img src="e-ticaret site\gifler/login.gif" class="img-fluid">
+<img src="e-ticaret site\gifler/detay.gif" class="img-fluid">
 <h1>Proje Özellikleri</h1>
 
 <h4>
