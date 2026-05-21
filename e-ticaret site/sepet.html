@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sepetim | KIRAR SHOES</title>
+  <link rel="shortcut icon" href="images/kirarshoeslogo.png" type="image/png">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="css/kirar.css">
+  <style>
+    .auth-container { max-width: 900px; margin: 60px auto; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; background: white; border-radius: var(--border-radius-lg); overflow: hidden; box-shadow: var(--shadow-md); }
+    .auth-box { padding: 40px; }
+    .auth-title { font-size: 24px; font-weight: 700; margin-bottom: 24px; }
+    .auth-divider { width: 1px; background: var(--border-light); }
+    .sepet-wrapper { max-width: 1100px; margin: 60px auto; display: grid; grid-template-columns: 2fr 1fr; gap: 40px; }
+    .sepet-list { background: white; padding: 30px; border-radius: var(--border-radius-md); box-shadow: var(--shadow-sm); }
+    .sepet-item { display: flex; gap: 20px; padding: 20px 0; border-bottom: 1px solid var(--border-light); }
+    .sepet-item:last-child { border-bottom: none; }
+    .sepet-img { width: 100px; height: 120px; object-fit: cover; border-radius: var(--border-radius-sm); }
+    .sepet-info { flex: 1; }
+    .qty-controls { display: flex; align-items: center; gap: 12px; margin-top: 12px; }
+    .qty-btn { width: 32px; height: 32px; border-radius: 4px; background: #eee; cursor: pointer; font-weight: bold; }
+    .admin-container { max-width: 1200px; margin: 40px auto; display: grid; grid-template-columns: 250px 1fr; gap: 30px; }
+    .admin-menu { background: white; padding: 20px; border-radius: var(--border-radius-md); box-shadow: var(--shadow-sm); }
+    .admin-menu-item { display: block; padding: 12px; margin-bottom: 8px; border-radius: 4px; cursor: pointer; font-weight: 500; }
+    .admin-menu-item:hover, .admin-menu-item.active { background: var(--accent); color: white; }
+    .admin-content { background: white; padding: 30px; border-radius: var(--border-radius-md); box-shadow: var(--shadow-sm); }
+    .table { width: 100%; border-collapse: collapse; }
+    .table th, .table td { padding: 12px; text-align: left; border-bottom: 1px solid var(--border-light); }
+    @media (max-width: 768px) {
+        .auth-container, .sepet-wrapper, .admin-container { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="container header-inner">
+      <a href="index.html" class="logo"><img src="images/kirarshoeslogo.png" alt="KIRAR SHOES"></a>
+      <nav class="nav-links">
+        <a href="index.html">Ana Sayfa</a>
+        <a href="erkek.html">Erkek</a>
+        <a href="kadin.html">Kadın</a>
+      </nav>
+      <div class="nav-actions">
+        <a href="ara.html" class="nav-icon-btn"><span class="material-icons">search</span></a>
+        <div id="nav-user"></div>
+        <a href="sepet.html" class="nav-icon-btn"><span class="material-icons">shopping_bag</span><span class="cart-badge" id="cart-badge">0</span></a>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <h1 style="margin-top:40px;">Sepetim</h1>
+    <div class="sepet-wrapper" id="sepet-content">
+      <!-- Injected by JS -->
+    </div>
+  </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', renderSepet);
+    
+    function renderSepet() {
+      const cart = KIRAR.getCart();
+      const container = document.getElementById('sepet-content');
+      
+      if(cart.length === 0) {
+        container.style.display = 'block';
+        container.innerHTML = `<div style="text-align:center; padding:100px 0;"><i class="material-icons" style="font-size:64px;color:#ccc;">shopping_cart</i><h2 style="margin:20px 0;">Sepetiniz Boş</h2><a href="ara.html" class="btn-primary">Alışverişe Başla</a></div>`;
+        return;
+      }
+      
+      container.style.display = 'grid';
+      let itemsHtml = '<div class="sepet-list">';
+      cart.forEach(item => {
+        itemsHtml += `
+        <div class="sepet-item">
+          <img src="${item.image}" class="sepet-img">
+          <div class="sepet-info">
+            <div style="color:var(--text-muted); font-size:12px; font-weight:bold;">${item.brand}</div>
+            <div style="font-weight:600; font-size:18px; margin-bottom:8px;">${item.name}</div>
+            <div style="font-size:14px; color:var(--text-light);">Beden: ${item.size}</div>
+            <div style="font-size:20px; font-weight:700; color:var(--accent); margin-top:8px;">${KIRAR.formatPrice(item.price)}</div>
+            <div class="qty-controls">
+              <button class="qty-btn" onclick="KIRAR.updateCartQty('${item.key}', ${item.qty-1}); renderSepet();">-</button>
+              <span>${item.qty}</span>
+              <button class="qty-btn" onclick="KIRAR.updateCartQty('${item.key}', ${item.qty+1}); renderSepet();">+</button>
+              <button class="qty-btn" style="background:transparent; color:red; margin-left:auto; width:auto;" onclick="KIRAR.removeFromCart('${item.key}'); renderSepet();"><i class="material-icons">delete</i></button>
+            </div>
+          </div>
+        </div>`;
+      });
+      itemsHtml += '</div>';
+      
+      const total = KIRAR.cartTotal();
+      const kargo = total >= 2000 ? 0 : 149.99;
+      const subtotal = total + kargo;
+      
+      const summaryHtml = `
+      <div style="background:white; padding:30px; border-radius:var(--border-radius-md); box-shadow:var(--shadow-sm); height:fit-content; position:sticky; top:100px;">
+        <h3 style="margin-bottom:24px;">Sipariş Özeti</h3>
+        <div style="display:flex; justify-content:space-between; margin-bottom:12px;"><span>Ürünler Toplamı</span><span>${KIRAR.formatPrice(total)}</span></div>
+        <div style="display:flex; justify-content:space-between; margin-bottom:20px; padding-bottom:20px; border-bottom:1px solid #eee;"><span>Kargo</span><span>${kargo===0?'Ücretsiz':KIRAR.formatPrice(kargo)}</span></div>
+        <div style="display:flex; justify-content:space-between; margin-bottom:30px; font-size:24px; font-weight:800;"><span>Toplam</span><span style="color:var(--accent);">${KIRAR.formatPrice(subtotal)}</span></div>
+        <button onclick="checkout()" class="btn-primary" style="width:100%; padding:18px;">Güvenli Ödeme</button>
+      </div>`;
+      
+      container.innerHTML = itemsHtml + summaryHtml;
+    }
+    
+    function checkout() {
+      const user = KIRAR.requireLogin();
+      if(!user) return;
+      window.location.href = 'odeme.html';
+    }
+  </script>
+
+  <footer class="footer" style="padding: 40px 0; margin-top: auto;">
+    <div class="container">
+      <div style="text-align:center; color: var(--text-light); font-size:14px;">&copy; 2026 KIRAR SHOES.</div>
+    </div>
+  </footer>
+  <script src="js/db.js"></script>

@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Giriş / Üye Ol | KIRAR SHOES</title>
+  <link rel="shortcut icon" href="images/kirarshoeslogo.png" type="image/png">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="css/kirar.css">
+  <style>
+    .auth-container { max-width: 900px; margin: 60px auto; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; background: white; border-radius: var(--border-radius-lg); overflow: hidden; box-shadow: var(--shadow-md); }
+    .auth-box { padding: 40px; }
+    .auth-title { font-size: 24px; font-weight: 700; margin-bottom: 24px; }
+    .auth-divider { width: 1px; background: var(--border-light); }
+    .sepet-wrapper { max-width: 1100px; margin: 60px auto; display: grid; grid-template-columns: 2fr 1fr; gap: 40px; }
+    .sepet-list { background: white; padding: 30px; border-radius: var(--border-radius-md); box-shadow: var(--shadow-sm); }
+    .sepet-item { display: flex; gap: 20px; padding: 20px 0; border-bottom: 1px solid var(--border-light); }
+    .sepet-item:last-child { border-bottom: none; }
+    .sepet-img { width: 100px; height: 120px; object-fit: cover; border-radius: var(--border-radius-sm); }
+    .sepet-info { flex: 1; }
+    .qty-controls { display: flex; align-items: center; gap: 12px; margin-top: 12px; }
+    .qty-btn { width: 32px; height: 32px; border-radius: 4px; background: #eee; cursor: pointer; font-weight: bold; }
+    .admin-container { max-width: 1200px; margin: 40px auto; display: grid; grid-template-columns: 250px 1fr; gap: 30px; }
+    .admin-menu { background: white; padding: 20px; border-radius: var(--border-radius-md); box-shadow: var(--shadow-sm); }
+    .admin-menu-item { display: block; padding: 12px; margin-bottom: 8px; border-radius: 4px; cursor: pointer; font-weight: 500; }
+    .admin-menu-item:hover, .admin-menu-item.active { background: var(--accent); color: white; }
+    .admin-content { background: white; padding: 30px; border-radius: var(--border-radius-md); box-shadow: var(--shadow-sm); }
+    .table { width: 100%; border-collapse: collapse; }
+    .table th, .table td { padding: 12px; text-align: left; border-bottom: 1px solid var(--border-light); }
+    @media (max-width: 768px) {
+        .auth-container, .sepet-wrapper, .admin-container { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="container header-inner">
+      <a href="index.html" class="logo"><img src="images/kirarshoeslogo.png" alt="KIRAR SHOES"></a>
+      <nav class="nav-links">
+        <a href="index.html">Ana Sayfa</a>
+        <a href="erkek.html">Erkek</a>
+        <a href="kadin.html">Kadın</a>
+      </nav>
+      <div class="nav-actions">
+        <a href="ara.html" class="nav-icon-btn"><span class="material-icons">search</span></a>
+        <div id="nav-user"></div>
+        <a href="sepet.html" class="nav-icon-btn"><span class="material-icons">shopping_bag</span><span class="cart-badge" id="cart-badge">0</span></a>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="auth-container">
+      <div class="auth-box">
+        <h2 class="auth-title">Giriş Yap</h2>
+        <form onsubmit="doLogin(event)">
+          <div class="form-group">
+            <label class="form-label">E-Posta</label>
+            <input type="email" id="login-email" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+              <label class="form-label" style="margin-bottom:0;">Şifre</label>
+              <a href="javascript:void(0)" onclick="openResetModal()" style="font-size:13px; color:var(--primary); text-decoration:none; font-weight:500;">Şifremi Unuttum</a>
+            </div>
+            <input type="password" id="login-pwd" class="form-control" required>
+          </div>
+          <button type="submit" class="btn-primary" style="width:100%">Giriş Yap</button>
+        </form>
+      </div>
+      <div class="auth-box" style="background:#f9f9f9;">
+        <h2 class="auth-title">Üye Ol</h2>
+        <form onsubmit="doRegister(event)">
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+            <div class="form-group">
+              <label class="form-label">Ad</label>
+              <input type="text" id="reg-name" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Soyad</label>
+              <input type="text" id="reg-surname" class="form-control" required>
+            </div>
+          </div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+            <div class="form-group">
+              <label class="form-label">Telefon Numarası</label>
+              <input type="tel" id="reg-phone" class="form-control" placeholder="05xxxxxxxxx" required pattern="05[0-9]{9}">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Cinsiyet</label>
+              <select id="reg-gender" class="form-control" required style="height:44px; padding:0 12px; border:1px solid #ccc; border-radius:4px; width:100%; background:white; font-size:14px; color:#333;">
+                <option value="" disabled selected hidden>Seçiniz</option>
+                <option value="Kadın">Kadın</option>
+                <option value="Erkek">Erkek</option>
+                <option value="Belirtmek İstemiyorum">Belirtmek İstemiyorum</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">E-Posta</label>
+            <input type="email" id="reg-email" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Şifre</label>
+            <input type="password" id="reg-pwd" class="form-control" required minlength="8" placeholder="En az 8 karakter, A-Z, a-z, özel karakter">
+          </div>
+          <button type="submit" class="btn-primary" style="width:100%; background:var(--primary)">Hemen Üye Ol</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Forgot Password Modal -->
+  <div id="reset-modal" class="modal-overlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); backdrop-filter:blur(5px); z-index:1000; justify-content:center; align-items:center;">
+    <div class="modal-card" style="background:white; padding:40px; border-radius:12px; width:90%; max-width:450px; box-shadow:0 10px 30px rgba(0,0,0,0.15); position:relative; animation: slideIn 0.3s ease;">
+      <span class="material-icons" onclick="closeResetModal()" style="position:absolute; top:20px; right:20px; cursor:pointer; color:#777; transition:color 0.2s;">close</span>
+      
+      <!-- STEP 1: KIMLIK DOGRULAMA -->
+      <div id="reset-step-1">
+        <h3 style="font-size:18px; font-weight:700; margin-bottom:12px; display:flex; align-items:center; gap:8px; color:#333;">
+          <span class="material-icons" style="color:var(--primary); font-size:24px;">security</span> 1. Aşama: Kimlik Doğrulama
+        </h3>
+        <p style="font-size:13px; color:#666; margin-bottom:20px; line-height:1.5;">Şifrenizi sıfırlamak için lütfen sisteme kayıtlı olan <strong>E-Posta</strong> adresinizi ve <strong>Telefon Numaranızı</strong> giriniz.</p>
+        
+        <form onsubmit="doVerifyIdentity(event)">
+          <div class="form-group">
+            <label class="form-label">Kayıtlı E-Posta Adresi</label>
+            <input type="email" id="reset-email" class="form-control" required placeholder="ornek@domain.com">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Kayıtlı Telefon Numarası</label>
+            <input type="tel" id="reset-phone" class="form-control" required placeholder="05xxxxxxxxx" pattern="05[0-9]{9}">
+          </div>
+          <button type="submit" class="btn-primary" style="width:100%; margin-top:8px;">Doğrulama Kodu Gönder</button>
+        </form>
+      </div>
+
+      <!-- STEP 2: SMS KODU -->
+      <div id="reset-step-2" style="display:none;">
+        <h3 style="font-size:18px; font-weight:700; margin-bottom:12px; display:flex; align-items:center; gap:8px; color:#333;">
+          <span class="material-icons" style="color:var(--primary); font-size:24px;">sms</span> 2. Aşama: SMS Doğrulama
+        </h3>
+        <p style="font-size:13px; color:#666; margin-bottom:20px; line-height:1.5;">Telefonunuza 6 haneli bir doğrulama kodu gönderildi. Lütfen kodu aşağıdaki alana giriniz.</p>
+        
+        <form onsubmit="doVerifyCode(event)">
+          <div class="form-group">
+            <label class="form-label" style="text-align:center; display:block;">SMS Doğrulama Kodu</label>
+            <input type="text" id="reset-sms-code" class="form-control" required placeholder="******" maxlength="6" style="text-align:center; font-size:22px; letter-spacing:6px; font-weight:bold; font-family:monospace; margin-top:8px;">
+          </div>
+          <button type="submit" class="btn-primary" style="width:100%; margin-top:8px;">Kodu Doğrula</button>
+        </form>
+      </div>
+
+      <!-- STEP 3: YENI SIFRE -->
+      <div id="reset-step-3" style="display:none;">
+        <h3 style="font-size:18px; font-weight:700; margin-bottom:12px; display:flex; align-items:center; gap:8px; color:#333;">
+          <span class="material-icons" style="color:var(--primary); font-size:24px;">lock_reset</span> 3. Aşama: Yeni Şifre
+        </h3>
+        <p style="font-size:13px; color:#666; margin-bottom:20px; line-height:1.5;">Kimliğiniz doğrulandı! Yeni şifreniz en az 8 karakter olmalı, büyük/küçük harf ve özel karakter içermelidir.</p>
+        
+        <form onsubmit="doResetPassword(event)">
+          <div class="form-group">
+            <label class="form-label">Yeni Şifre</label>
+            <input type="password" id="reset-new-pwd" class="form-control" required minlength="8" placeholder="Yeni şifreniz">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Yeni Şifre Tekrar</label>
+            <input type="password" id="reset-new-pwd-confirm" class="form-control" required minlength="8" placeholder="Yeni şifrenizi tekrar girin">
+          </div>
+          <button type="submit" class="btn-primary" style="width:100%; margin-top:8px;">Şifreyi Güncelle</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- MOCK SMS NOTIFICATION POPUP (Glassmorphism Styled) -->
+  <div id="mock-sms-notification" style="display:none; position:fixed; top:-120px; left:50%; transform:translateX(-50%); width:90%; max-width:400px; background:rgba(255,255,255,0.92); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); border-radius:16px; box-shadow:0 12px 40px rgba(0,0,0,0.18); border:1px solid rgba(255,255,255,0.25); z-index:3000; padding:16px; transition:all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);">
+    <div style="display:flex; align-items:center; gap:12px;">
+      <div style="background:var(--primary); color:white; border-radius:50%; width:38px; height:38px; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 10px rgba(0,0,0,0.15);">
+        <span class="material-icons" style="font-size:20px;">chat_bubble</span>
+      </div>
+      <div style="flex:1;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+          <strong style="color:#111; font-size:13px; font-weight:700; letter-spacing:0.5px;">💬 YENİ SMS BİLDİRİMİ</strong>
+          <span style="color:#777; font-size:10px; font-weight:600;">Şimdi</span>
+        </div>
+        <div id="mock-sms-text" style="color:#333; font-size:13px; line-height:1.4; font-weight:600; font-family:'Outfit', sans-serif;"></div>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    @keyframes slideIn {
+      from { transform: translateY(-30px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+  </style>
+
+  <script src="js/db.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if(KIRAR.getCurrentUser()) window.location.href = 'profilim.html';
+    });
+
+    let generatedSmsCode = '';
+    let targetResetEmail = '';
+
+    function doLogin(e) {
+      e.preventDefault();
+      const res = KIRAR.login(document.getElementById('login-email').value, document.getElementById('login-pwd').value);
+      if(res.ok) window.location.href = res.user.role === 'admin' ? 'admin.html' : 'profilim.html';
+      else KIRAR.showToast(res.msg, 'error');
+    }
+
+    function doRegister(e) {
+      e.preventDefault();
+      const res = KIRAR.register(
+        document.getElementById('reg-name').value, document.getElementById('reg-surname').value,
+        document.getElementById('reg-email').value, document.getElementById('reg-pwd').value,
+        document.getElementById('reg-phone').value, document.getElementById('reg-gender').value
+      );
+      if(res.ok) window.location.href = 'profilim.html';
+      else KIRAR.showToast(res.msg, 'error');
+    }
+
+    function openResetModal() {
+      document.getElementById('reset-step-1').style.display = 'block';
+      document.getElementById('reset-step-2').style.display = 'none';
+      document.getElementById('reset-step-3').style.display = 'none';
+      document.getElementById('reset-modal').style.display = 'flex';
+    }
+
+    function closeResetModal() {
+      document.getElementById('reset-modal').style.display = 'none';
+      document.getElementById('reset-email').value = '';
+      document.getElementById('reset-phone').value = '';
+      document.getElementById('reset-sms-code').value = '';
+      document.getElementById('reset-new-pwd').value = '';
+      document.getElementById('reset-new-pwd-confirm').value = '';
+      generatedSmsCode = '';
+      targetResetEmail = '';
+    }
+
+    function doVerifyIdentity(e) {
+      e.preventDefault();
+      const email = document.getElementById('reset-email').value.trim();
+      const phone = document.getElementById('reset-phone').value.trim();
+      
+      const res = KIRAR.verifyUserForReset(email, phone);
+      if(res.ok) {
+        targetResetEmail = email;
+        generatedSmsCode = Math.floor(100000 + Math.random() * 900000).toString();
+        
+        // Show simulated phone SMS bubble
+        showMockSms(`KIRAR SHOES: Şifre sıfırlama doğrulama kodunuz: ${generatedSmsCode}`);
+        
+        // Transition to SMS input
+        document.getElementById('reset-step-1').style.display = 'none';
+        document.getElementById('reset-step-2').style.display = 'block';
+        KIRAR.showToast('Doğrulama kodu SMS olarak gönderildi!', 'success');
+      } else {
+        KIRAR.showToast(res.msg, 'error');
+      }
+    }
+
+    function showMockSms(text) {
+      const smsDiv = document.getElementById('mock-sms-notification');
+      document.getElementById('mock-sms-text').textContent = text;
+      
+      smsDiv.style.display = 'block';
+      setTimeout(() => {
+        smsDiv.style.top = '25px';
+        smsDiv.style.transform = 'translateX(-50%) translateY(0)';
+      }, 50);
+      
+      // Auto Hide after 8s
+      setTimeout(hideMockSms, 8000);
+    }
+
+    function hideMockSms() {
+      const smsDiv = document.getElementById('mock-sms-notification');
+      smsDiv.style.top = '-120px';
+      setTimeout(() => {
+        smsDiv.style.display = 'none';
+      }, 600);
+    }
+
+    function doVerifyCode(e) {
+      e.preventDefault();
+      const code = document.getElementById('reset-sms-code').value.trim();
+      if(code === generatedSmsCode) {
+        KIRAR.showToast('Telefon doğrulaması başarılı!', 'success');
+        document.getElementById('reset-step-2').style.display = 'none';
+        document.getElementById('reset-step-3').style.display = 'block';
+      } else {
+        KIRAR.showToast('Girdiğiniz doğrulama kodu hatalı. Lütfen kontrol edin.', 'error');
+      }
+    }
+
+    function doResetPassword(e) {
+      e.preventDefault();
+      const newPwd = document.getElementById('reset-new-pwd').value;
+      const confirmPwd = document.getElementById('reset-new-pwd-confirm').value;
+      
+      if(newPwd !== confirmPwd) {
+        KIRAR.showToast('Yeni şifreler eşleşmiyor.', 'error');
+        return;
+      }
+      
+      const res = KIRAR.forgotPassword(targetResetEmail, newPwd);
+      if(res.ok) {
+        KIRAR.showToast(res.msg, 'success');
+        closeResetModal();
+      } else {
+        KIRAR.showToast(res.msg, 'error');
+      }
+    }
+  </script>
+
+  <footer class="footer" style="padding: 40px 0; margin-top: auto;">
+    <div class="container">
+      <div style="text-align:center; color: var(--text-light); font-size:14px;">&copy; 2026 KIRAR SHOES.</div>
+    </div>
+  </footer>

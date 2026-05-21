@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profilim | KIRAR SHOES</title>
+  <link rel="shortcut icon" href="images/kirarshoeslogo.png" type="image/png">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="css/kirar.css">
+  <style>
+    .admin-container { max-width: 1200px; margin: 40px auto; display: grid; grid-template-columns: 250px 1fr; gap: 30px; }
+    .admin-menu { background: white; padding: 20px; border-radius: var(--border-radius-md); box-shadow: var(--shadow-sm); align-self: start; }
+    .admin-menu-item { display: flex; align-items: center; gap: 12px; padding: 12px; margin-bottom: 8px; border-radius: 4px; cursor: pointer; font-weight: 500; transition: var(--transition-fast); }
+    .admin-menu-item:hover, .admin-menu-item.active { background: var(--accent); color: white; }
+    .admin-content { background: white; padding: 30px; border-radius: var(--border-radius-md); box-shadow: var(--shadow-sm); min-height: 400px; }
+    .tab-pane { display: none; }
+    .tab-pane.active { display: block; }
+    @media (max-width: 768px) { .admin-container { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="container header-inner">
+      <a href="index.html" class="logo"><img src="images/kirarshoeslogo.png" alt="KIRAR SHOES"></a>
+      <nav class="nav-links">
+        <a href="index.html">Ana Sayfa</a>
+        <a href="erkek.html">Erkek</a>
+        <a href="kadin.html">Kadın</a>
+      </nav>
+      <div class="nav-actions">
+        <a href="ara.html" class="nav-icon-btn"><span class="material-icons">search</span></a>
+        <a href="favoriler.html" class="nav-icon-btn"><span class="material-icons">favorite_border</span></a>
+        <div id="nav-user"></div>
+        <a href="sepet.html" class="nav-icon-btn"><span class="material-icons">shopping_bag</span><span class="cart-badge" id="cart-badge">0</span></a>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="admin-container">
+      <div class="admin-menu">
+        <div style="text-align:center; padding-bottom:20px; margin-bottom:20px; border-bottom:1px solid #eee;">
+          <div style="width:80px; height:80px; background:#f0f0f0; border-radius:50%; margin:0 auto 12px; display:flex; align-items:center; justify-content:center;"><i class="material-icons" style="font-size:40px; color:#ccc;">person</i></div>
+          <div id="p-name-title" style="font-weight:700; font-size:18px;"></div>
+          <div id="p-email-title" style="font-size:14px; color:#888;"></div>
+        </div>
+        <div class="admin-menu-item active" onclick="switchTab('orders', this)"><i class="material-icons">shopping_bag</i> Siparişlerim</div>
+        <div class="admin-menu-item" onclick="switchTab('settings', this)"><i class="material-icons">settings</i> Bilgilerimi Güncelle</div>
+        <div class="admin-menu-item" style="color:var(--accent); margin-top:20px;" onclick="KIRAR.logout(); window.location.href='index.html';"><i class="material-icons">logout</i> Çıkış Yap</div>
+      </div>
+      
+      <div class="admin-content">
+        <!-- Orders Tab -->
+        <div id="tab-orders" class="tab-pane active">
+          <h2>Sipariş Geçmişim</h2>
+          <div id="orders-list" style="margin-top:20px;"></div>
+        </div>
+        
+        <!-- Settings Tab -->
+        <div id="tab-settings" class="tab-pane">
+          <h2>Bilgilerimi Güncelle</h2>
+          <form onsubmit="handleUpdate(event)" style="margin-top:20px; max-width:500px;">
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+              <div class="form-group">
+                <label class="form-label">Ad</label>
+                <input type="text" id="u-name" class="form-control" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Soyad</label>
+                <input type="text" id="u-surname" class="form-control" required>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">E-Posta (Değiştirilemez)</label>
+              <input type="email" id="u-email" class="form-control" disabled style="background:#e9ecef;">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Telefon</label>
+              <input type="tel" id="u-phone" class="form-control" placeholder="0555...">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Cinsiyet</label>
+              <select id="u-gender" class="form-control">
+                <option value="Erkek">Erkek</option>
+                <option value="Kadın">Kadın</option>
+                <option value="Belirtmek İstemiyorum">Belirtmek İstemiyorum</option>
+              </select>
+            </div>
+            <button type="submit" class="btn-primary" style="width:100%;">Kaydet</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer" style="padding: 40px 0; margin-top: auto;">
+    <div class="container">
+      <div style="text-align:center; color: var(--text-light); font-size:14px;">&copy; 2026 KIRAR SHOES.</div>
+    </div>
+  </footer>
+  <script src="js/db.js"></script>
+  <script>
+    let currentUser;
+    document.addEventListener('DOMContentLoaded', () => {
+      currentUser = KIRAR.requireLogin();
+      if(!currentUser) return;
+      
+      document.getElementById('p-name-title').textContent = currentUser.name + ' ' + currentUser.surname;
+      document.getElementById('p-email-title').textContent = currentUser.email;
+      
+      // Load form data
+      document.getElementById('u-name').value = currentUser.name || '';
+      document.getElementById('u-surname').value = currentUser.surname || '';
+      document.getElementById('u-email').value = currentUser.email || '';
+      document.getElementById('u-phone').value = currentUser.phone || '';
+      document.getElementById('u-gender').value = currentUser.gender || 'Erkek';
+      
+      renderOrders();
+    });
+    
+    function switchTab(tabId, el) {
+      document.querySelectorAll('.tab-pane').forEach(t => t.classList.remove('active'));
+      document.getElementById('tab-' + tabId).classList.add('active');
+      document.querySelectorAll('.admin-menu-item').forEach(m => m.classList.remove('active'));
+      el.classList.add('active');
+    }
+    
+    function renderOrders() {
+      const orders = KIRAR.getUserOrders();
+      const list = document.getElementById('orders-list');
+      if(orders.length === 0) {
+        list.innerHTML = "<p>Henüz siparişiniz bulunmamaktadır.</p>";
+      } else {
+        list.innerHTML = '';
+        orders.forEach(o => {
+          let itemsText = o.items.map(i => `${i.name} (${i.size}) x${i.qty}`).join(', ');
+          const date = new Date(o.createdAt).toLocaleDateString('tr-TR');
+          list.innerHTML += `
+            <div style="border:1px solid var(--border-light); border-radius:var(--border-radius-sm); padding:20px; margin-bottom:16px;">
+              <div style="display:flex; justify-content:space-between; margin-bottom:12px; border-bottom:1px solid var(--border-light); padding-bottom:12px;">
+                <div>
+                  <div style="font-weight:bold; font-size:16px;">Sipariş #${o.id}</div>
+                  <div style="font-size:12px; color:var(--text-light);">${date}</div>
+                </div>
+                <div style="color:var(--accent); font-weight:bold;">${o.status}</div>
+              </div>
+              <div style="color:var(--text-muted); margin-bottom:12px; font-size:14px;">${itemsText}</div>
+              <div style="font-weight:bold; font-size:18px;">Toplam: ${KIRAR.formatPrice(o.total)}</div>
+            </div>`;
+        });
+      }
+    }
+
+    function handleUpdate(e) {
+      e.preventDefault();
+      const data = {
+        id: currentUser.id,
+        name: document.getElementById('u-name').value,
+        surname: document.getElementById('u-surname').value,
+        phone: document.getElementById('u-phone').value,
+        gender: document.getElementById('u-gender').value
+      };
+      if (KIRAR.updateUser(data)) {
+        KIRAR.showToast('Bilgileriniz başarıyla güncellendi.');
+        document.getElementById('p-name-title').textContent = data.name + ' ' + data.surname;
+        currentUser = KIRAR.getCurrentUser();
+      }
+    }
+  </script>
+</body>
+</html>

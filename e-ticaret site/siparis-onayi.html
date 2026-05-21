@@ -1,0 +1,93 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Sipariş Onayı | FLO</title>
+<link rel="shortcut icon" href="images/flo-logo.svg">
+<link href="css/eticaret.css" type="text/css" rel="stylesheet"/>
+<link href="css/common.css" type="text/css" rel="stylesheet"/>
+<style>
+.onay-container { max-width: 1100px; margin: 30px auto; display: flex; gap: 30px; padding: 0 20px; font-family: Roboto, sans-serif; }
+.onay-left { flex: 1; }
+.onay-right { width: 360px; }
+.onay-card { background: #fff; border: 1px solid #eee; border-radius: 14px; padding: 25px; margin-bottom: 20px; }
+.onay-card h3 { color: #333; font-size: 18px; margin: 0 0 20px; padding-bottom: 12px; border-bottom: 2px solid #f0f0f0; }
+.onay-field { margin-bottom: 15px; }
+.onay-field label { display: block; font-size: 13px; color: #888; margin-bottom: 5px; }
+.onay-field input, .onay-field textarea { width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; font-family: Roboto, sans-serif; box-sizing: border-box; }
+.onay-field textarea { resize: vertical; min-height: 80px; }
+.onay-field input:focus, .onay-field textarea:focus { border-color: #ff6600; outline: none; }
+.onay-item { display: flex; gap: 15px; padding: 12px 0; border-bottom: 1px solid #f0f0f0; }
+.onay-item img { width: 60px; height: 80px; object-fit: cover; border-radius: 6px; }
+.onay-item-info { flex: 1; }
+.onay-item-name { font-size: 14px; color: #333; font-weight: 500; }
+.onay-item-detail { font-size: 12px; color: #888; margin-top: 3px; }
+.onay-item-price { font-size: 15px; font-weight: 700; color: #ff6600; text-align: right; }
+.summary-row { display: flex; justify-content: space-between; padding: 8px 0; font-size: 14px; color: #555; }
+.summary-total { display: flex; justify-content: space-between; padding: 12px 0; font-size: 20px; font-weight: 700; color: #333; border-top: 2px solid #f0f0f0; margin-top: 10px; }
+.summary-total span:last-child { color: #ff6600; }
+.order-btn { display: block; width: 100%; padding: 16px; background: linear-gradient(135deg, #1db954, #14833b); color: #fff; border: none; border-radius: 10px; font-size: 16px; font-weight: 700; cursor: pointer; font-family: Roboto, sans-serif; transition: transform 0.2s; }
+.order-btn:hover { transform: translateY(-2px); }
+</style>
+</head>
+<body>
+<div>
+	<div class="banner_ana">
+	<div class="banner_div_ust">
+   	  <div class="govde">
+	    <a href="/"><div class="banner_logo"><img src="images/flo-logo.svg" height="44px" width="135px"/></div></a>
+      </div>
+    </div>
+</div>
+	<div class="hizalama_bitir"></div>
+
+<form action="/siparis-onayi" method="POST">
+<div class="onay-container">
+    <div class="onay-left">
+        <div class="onay-card">
+            <h3>📍 Teslimat Adresi</h3>
+            <div class="onay-field">
+                <label>Alıcı</label>
+                <input type="text" value=" " readonly>
+            </div>
+            <div class="onay-field">
+                <label>Telefon</label>
+                <input type="tel" value="" placeholder="Telefon numaranız">
+            </div>
+            <div class="onay-field">
+                <label>Adres</label>
+                <textarea name="address" placeholder="Teslimat adresinizi giriniz..." required></textarea>
+            </div>
+        </div>
+    </div>
+
+    <div class="onay-right">
+        <div class="onay-card">
+            <h3>🛒 Sipariş Özeti</h3>
+            
+            <div class="onay-item">
+                <img src="" alt="">
+                <div class="onay-item-info">
+                    <div class="onay-item-name"></div>
+                    <div class="onay-item-detail">Beden:  · Adet: </div>
+                </div>
+                <div class="onay-item-price"> TL</div>
+            </div>
+            
+
+            <div style="margin-top:15px;">
+                <div class="summary-row"><span>Ürünler Toplamı</span><span> TL</span></div>
+                <div class="summary-row"><span>Kargo</span><span><span style="color:#1db954">Ücretsiz</span> TL</span></div>
+                <div class="summary-total"><span>Toplam</span><span> TL</span></div>
+            </div>
+
+            <button type="submit" class="order-btn" style="margin-top:20px;">✓ SİPARİŞİ ONAYLA</button>
+        </div>
+    </div>
+</div>
+</form>
+
+</div>
+<script src="js/db.js"></script>
+</body>
+</html>

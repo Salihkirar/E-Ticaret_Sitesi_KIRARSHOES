@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KIRAR SHOES | Premium Ayakkabı ve Giyim</title>
+  <link rel="shortcut icon" href="images/kirarshoeslogo.png" type="image/png">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="css/kirar.css">
+</head>
+
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="container header-inner">
+      <a href="index.html" class="logo"><img src="images/kirarshoeslogo.png" alt="KIRAR SHOES"></a>
+
+      <nav class="nav-links">
+        <a href="index.html" class="active">Ana Sayfa</a>
+        <a href="erkek.html">Erkek</a>
+        <a href="kadin.html">Kadın</a>
+        <a href="cocuk.html">Çocuk</a>
+        <a href="giyim.html">Giyim</a>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="ara.html" class="nav-icon-btn" title="Ara">
+          <span class="material-icons">search</span>
+          <span class="nav-lbl">Ara</span>
+        </a>
+        <a href="favoriler.html" class="nav-icon-btn" title="Favoriler">
+          <span class="material-icons">favorite_border</span>
+          <span class="nav-lbl">Favoriler</span>
+        </a>
+        <div id="nav-user">
+          <!-- JS will inject user or login button here -->
+        </div>
+        <a href="sepet.html" class="nav-icon-btn" title="Sepetim">
+          <span class="material-icons">shopping_bag</span>
+          <span class="nav-lbl">Sepet</span>
+          <span class="cart-badge" id="cart-badge">0</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <img src="images/alisveris_1ilk.webp" alt="KIRAR SHOES Premium" class="hero-bg">
+    <div class="container">
+      <div class="hero-content">
+        <div class="hero-tag">YENİ SEZON KOLEKSİYONU</div>
+        <h1>Tarzını<br>Adımlarınla Belirle.</h1>
+        <p>Premium kalite, modern tasarım ve gün boyu süren konfor. Yeni sezon koleksiyonunu keşfet ve tarzını bir adım
+          öteye taşı.</p>
+        <div class="hero-btns">
+          <a href="#trending" class="btn-primary">Koleksiyonu Keşfet</a>
+          <a href="erkek.html" class="btn-secondary">Erkek Modelleri</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Categories -->
+  <section class="section">
+    <div class="container">
+      <div class="categories-banner">
+        <a href="kadin.html" class="cat-box">
+          <img src="images/alisveris_2.webp" alt="Kadın Koleksiyonu">
+          <div class="cat-overlay">
+            <div class="cat-content">
+              <h3>Kadın</h3>
+              <span>Keşfet <i class="material-icons">arrow_forward</i></span>
+            </div>
+          </div>
+        </a>
+        <a href="erkek.html" class="cat-box">
+          <img src="images/erkek_kesfet_1.webp" alt="Erkek Koleksiyonu">
+          <div class="cat-overlay">
+            <div class="cat-content">
+              <h3>Erkek</h3>
+              <span>Keşfet <i class="material-icons">arrow_forward</i></span>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Trending Products -->
+  <section class="section" id="trending" style="background-color: white;">
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <div
+            style="color:var(--accent); font-weight:700; font-size:14px; letter-spacing:2px; margin-bottom:8px; text-transform:uppercase;">
+            Trendler</div>
+          <h2 class="section-title">Haftanın Popülerleri</h2>
+        </div>
+        <a href="ara.html" class="section-link">Tümünü Gör <i class="material-icons">east</i></a>
+      </div>
+
+      <div class="product-grid" id="trending-grid">
+        <!-- JS will populate products here -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Brands Section -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Popüler Markalar</h2>
+      </div>
+      <div
+        style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:30px; opacity:0.6; filter:grayscale(100%);">
+        <img src="images/nike.webp" alt="Nike" height="40">
+        <img src="images/adidas.webp" alt="Adidas" height="40">
+        <img src="images/lumberjack.webp" alt="Lumberjack" height="30">
+        <img src="images/dockers.webp" alt="Dockers" height="30">
+        <img src="images/kinetix.webp" alt="Kinetix" height="25">
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="index.html" class="logo"><img src="images/kirarshoeslogo.png" alt="KIRAR SHOES"></a>
+          <p class="footer-desc">Premium ayakkabı ve giyim markalarının buluşma noktası. En iyi kalite, en iyi fiyat
+            garantisiyle.</p>
+          <div class="social-links">
+            <a href="#"><i class="material-icons">facebook</i></a>
+            <a href="#"><i class="material-icons">camera_alt</i></a>
+            <a href="#"><i class="material-icons">play_arrow</i></a>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="footer-title">Kategoriler</h4>
+          <ul class="footer-links">
+            <li><a href="erkek.html">Erkek Ayakkabı</a></li>
+            <li><a href="kadin.html">Kadın Ayakkabı</a></li>
+            <li><a href="cocuk.html">Çocuk Ayakkabı</a></li>
+            <li><a href="giyim.html">Spor Giyim</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-title">Kurumsal</h4>
+          <ul class="footer-links">
+            <li><a href="#">Hakkımızda</a></li>
+            <li><a href="#">İletişim</a></li>
+            <li><a href="#">Mağazalarımız</a></li>
+            <li><a href="#">Kariyer</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-title">Yardım</h4>
+          <ul class="footer-links">
+            <li><a href="#">Sıkça Sorulan Sorular</a></li>
+            <li><a href="#">İade ve Değişim</a></li>
+            <li><a href="#">Kargo Takip</a></li>
+            <li><a href="#">Beden Tablosu</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>&copy; 2026 KIRAR SHOES. Tüm hakları saklıdır.</div>
+        <div style="display:flex; gap:16px;">
+          <a href="#">Gizlilik Politikası</a>
+          <a href="#">Kullanım Koşulları</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/db.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Get trending products (first 8 for demo)
+      const products = KIRAR.getProducts().slice(0, 8);
+      const grid = document.getElementById('trending-grid');
+
+      products.forEach(p => {
+        grid.insertAdjacentHTML('beforeend', KIRAR.productCardHtml(p));
+      });
+    });
+  </script>
+</body>
+
+</html>

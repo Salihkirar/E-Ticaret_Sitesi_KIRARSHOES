@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Güvenli Ödeme | KIRAR SHOES</title>
+  <link rel="shortcut icon" href="images/kirarshoeslogo.png" type="image/png">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="css/kirar.css">
+  <style>
+    .payment-container {
+      max-width: 1000px;
+      margin: 60px auto;
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 40px;
+    }
+
+    .payment-box {
+      background: white;
+      padding: 40px;
+      border-radius: var(--border-radius-lg);
+      box-shadow: var(--shadow-md);
+    }
+
+    .section-title {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 24px;
+      color: var(--primary);
+      border-bottom: 2px solid var(--border-light);
+      padding-bottom: 12px;
+    }
+
+    .cc-wrapper {
+      position: relative;
+      width: 100%;
+      max-width: 400px;
+      margin: 0 auto 30px;
+    }
+
+    .cc-card {
+      background: linear-gradient(135deg, #111, #333);
+      color: white;
+      padding: 24px;
+      border-radius: 16px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      aspect-ratio: 1.58;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cc-chip {
+      width: 45px;
+      height: 35px;
+      background: linear-gradient(135deg, #e0c871, #8f7934);
+      border-radius: 5px;
+    }
+
+    .cc-number {
+      font-size: 22px;
+      font-family: monospace;
+      letter-spacing: 2px;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+      margin-top: 20px;
+    }
+
+    .cc-details {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+      font-size: 14px;
+      text-transform: uppercase;
+    }
+
+    .cc-logo {
+      position: absolute;
+      right: 24px;
+      bottom: 24px;
+      font-style: italic;
+      font-weight: 800;
+      font-size: 20px;
+    }
+
+    @media (max-width: 768px) {
+      .payment-container {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body style="background-color: var(--bg-color);">
+  <header class="header">
+    <div class="container header-inner" style="justify-content:center;">
+      <a href="index.html" class="logo"><img src="images/kirarshoeslogo.png" alt="KIRAR SHOES"></a>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="payment-container">
+      <div class="payment-box">
+        <h2 class="section-title"><i class="material-icons" style="vertical-align:middle;">security</i> Güvenli Ödeme
+        </h2>
+
+        <div class="cc-wrapper">
+          <div class="cc-card">
+            <div class="cc-chip"></div>
+            <div class="cc-number" id="card-display">**** **** **** ****</div>
+            <div class="cc-details">
+              <div>
+                <div style="font-size:10px; color:#aaa;">Kart Sahibi</div>
+                <div id="name-display">KART SAHİBİ</div>
+              </div>
+              <div>
+                <div style="font-size:10px; color:#aaa;">SKT</div>
+                <div id="exp-display">MM/YY</div>
+              </div>
+            </div>
+            <div class="cc-logo">VISA</div>
+          </div>
+        </div>
+
+        <form id="payment-form" onsubmit="processPayment(event)">
+          <div class="form-group" style="margin-bottom: 24px;">
+            <label class="form-label">Kupon Kodu (Varsa)</label>
+            <div style="display:flex; gap:10px;">
+              <input type="text" id="coupon-code" class="form-control" placeholder="İlk Siparişe Özel %20: YUZDE20">
+              <button type="button" class="btn-primary" onclick="applyCoupon()"
+                style="padding:0 20px; white-space:nowrap;">Uygula</button>
+            </div>
+            <div id="coupon-msg" style="font-size:13px; margin-top:8px; font-weight:600;"></div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Teslimat Adresi</label>
+            <textarea id="address" class="form-control" rows="3" required
+              placeholder="Açık adresinizi giriniz..."></textarea>
+          </div>
+
+          <h3 style="margin:30px 0 20px; font-size:16px; color:var(--text-muted);">Kart Bilgileri</h3>
+          <div class="form-group">
+            <label class="form-label">Kart Üzerindeki İsim</label>
+            <input type="text" id="cc-name" class="form-control" required oninput="updateCard()"
+              placeholder="Örn: Ali Yılmaz">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Kart Numarası</label>
+            <input type="text" id="cc-number" class="form-control" required maxlength="19"
+              oninput="formatCardNumber(this)" placeholder="0000 0000 0000 0000">
+          </div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+            <div class="form-group">
+              <label class="form-label">Son Kullanma (AA/YY)</label>
+              <input type="text" id="cc-exp" class="form-control" required maxlength="5" oninput="formatExp(this)"
+                placeholder="12/25">
+            </div>
+            <div class="form-group">
+              <label class="form-label">CVV</label>
+              <input type="password" id="cc-cvv" class="form-control" required maxlength="3" placeholder="***">
+            </div>
+          </div>
+          <button type="submit" class="btn-primary" style="width:100%; padding:20px; font-size:18px; margin-top:20px;"
+            id="pay-btn">Ödemeyi Tamamla</button>
+        </form>
+      </div>
+
+      <div>
+        <div class="payment-box" style="position:sticky; top:100px;">
+          <h3 style="margin-bottom:24px; border-bottom:1px solid #eee; padding-bottom:12px;">Sipariş Özeti</h3>
+          <div id="order-summary-list"
+            style="margin-bottom:20px; border-bottom:1px solid #eee; padding-bottom:20px; max-height:250px; overflow-y:auto;">
+            <!-- JS -->
+          </div>
+          <div style="display:flex; justify-content:space-between; margin-bottom:12px;"><span>Ara Toplam</span><span
+              id="sum-sub">0 TL</span></div>
+          <div
+            style="display:flex; justify-content:space-between; margin-bottom:20px; padding-bottom:20px; border-bottom:1px solid #eee;">
+            <span>Kargo</span><span id="sum-cargo">0 TL</span></div>
+          <div style="display:flex; justify-content:space-between; font-size:24px; font-weight:800;">
+            <span>Toplam</span><span id="sum-total" style="color:var(--accent);">0 TL</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/db.js"></script>
+  <script>
+    let subTotal = 0;
+    let shipping = 0;
+    let discount = 0;
+    let finalTotal = 0;
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const user = KIRAR.requireLogin();
+      if (!user) return;
+
+      const cart = KIRAR.getCart();
+      if (cart.length === 0) {
+        window.location.href = 'sepet.html';
+        return;
+      }
+
+      let listHtml = '';
+      cart.forEach(item => {
+        listHtml += `<div style="display:flex; justify-content:space-between; font-size:14px; margin-bottom:10px;">
+          <span style="color:var(--text-muted);">${item.qty}x ${item.name} (${item.size})</span>
+          <span style="font-weight:600;">${KIRAR.formatPrice(item.price * item.qty)}</span>
+        </div>`;
+      });
+      document.getElementById('order-summary-list').innerHTML = listHtml;
+
+      subTotal = KIRAR.cartTotal();
+      shipping = subTotal >= 2000 ? 0 : 149.99;
+      updateTotals();
+    });
+
+    function updateTotals() {
+      finalTotal = subTotal + shipping - discount;
+      document.getElementById('sum-sub').textContent = KIRAR.formatPrice(subTotal);
+      document.getElementById('sum-cargo').innerHTML = shipping === 0 ? '<span style="color:#1db954">Ücretsiz</span>' : KIRAR.formatPrice(shipping);
+
+      let discountRow = document.getElementById('sum-discount-row');
+      if (discount > 0) {
+        if (!discountRow) {
+          discountRow = document.createElement('div');
+          discountRow.id = 'sum-discount-row';
+          discountRow.style = 'display:flex; justify-content:space-between; margin-bottom:12px; color:var(--primary); font-weight:bold;';
+          document.getElementById('sum-cargo').parentNode.after(discountRow);
+        }
+        discountRow.innerHTML = `<span>İndirim Kuponu</span><span>-${KIRAR.formatPrice(discount)}</span>`;
+      } else if (discountRow) {
+        discountRow.remove();
+      }
+
+      document.getElementById('sum-total').textContent = KIRAR.formatPrice(finalTotal);
+    }
+
+    function applyCoupon() {
+      const code = document.getElementById('coupon-code').value.toUpperCase().trim();
+      const msg = document.getElementById('coupon-msg');
+      if (code === 'YUZDE20' || code === 'KUPON20' || code === 'KIRAR20' || code === 'INDIRIM') {
+        const userOrders = KIRAR.getUserOrders();
+        if (userOrders.length > 0) {
+          discount = 0;
+          msg.textContent = 'YUZDE20 kuponu sadece ilk siparişe özeldir ve daha önce kullanılmıştır.';
+          msg.style.color = 'red';
+          updateTotals();
+          KIRAR.showToast('Bu kupon sadece ilk siparişte geçerlidir!', 'error');
+        } else {
+          discount = subTotal * 0.20; // 20% off
+          msg.textContent = '%20 İlk Sipariş İndirimi Uygulandı!';
+          msg.style.color = 'var(--primary)';
+          updateTotals();
+          KIRAR.showToast('İlk sipariş kuponu başarıyla uygulandı!', 'success');
+        }
+      } else if (code === 'YUZDE10') {
+        const cart = KIRAR.getCart();
+        const products = KIRAR.getProducts();
+        let eligibleDiscount = 0;
+        let hasEligibleItem = false;
+
+        cart.forEach(item => {
+          const prod = products.find(p => p.id === item.productId);
+          if (prod && prod.coupon === 'YUZDE10') {
+            eligibleDiscount += (item.price * item.qty) * 0.10;
+            hasEligibleItem = true;
+          }
+        });
+
+        if (hasEligibleItem) {
+          discount = eligibleDiscount;
+          msg.textContent = `Seçili kadın ürünlerinde %10 indirim uygulandı! (-${KIRAR.formatPrice(discount)})`;
+          msg.style.color = 'var(--primary)';
+          updateTotals();
+          KIRAR.showToast('Kupon başarıyla uygulandı!', 'success');
+        } else {
+          discount = 0;
+          msg.textContent = 'Sepetinizde bu kupona uygun bir kadın ürünü bulunmamaktadır.';
+          msg.style.color = 'red';
+          updateTotals();
+          KIRAR.showToast('Kupona uygun ürün bulunamadı!', 'error');
+        }
+      } else {
+        discount = 0;
+        msg.textContent = 'Geçersiz veya süresi dolmuş kupon kodu.';
+        msg.style.color = 'red';
+        updateTotals();
+      }
+    }
+
+    function formatCardNumber(input) {
+      let val = input.value.replace(/\D/g, '');
+      let formatted = '';
+      for (let i = 0; i < val.length; i++) {
+        if (i > 0 && i % 4 === 0) formatted += ' ';
+        formatted += val[i];
+      }
+      input.value = formatted;
+      document.getElementById('card-display').textContent = formatted || '**** **** **** ****';
+    }
+
+    function formatExp(input) {
+      let val = input.value.replace(/\D/g, '');
+      if (val.length > 2) val = val.substring(0, 2) + '/' + val.substring(2);
+      input.value = val;
+      document.getElementById('exp-display').textContent = val || 'MM/YY';
+    }
+
+    function updateCard() {
+      document.getElementById('name-display').textContent = document.getElementById('cc-name').value.toUpperCase() || 'KART SAHİBİ';
+    }
+
+    function processPayment(e) {
+      e.preventDefault();
+      const btn = document.getElementById('pay-btn');
+      btn.disabled = true;
+      btn.innerHTML = '<span class="material-icons" style="animation: spin 1s linear infinite;">autorenew</span> İşleniyor...';
+
+      // Simulate network request
+      setTimeout(() => {
+        const address = document.getElementById('address').value;
+        const res = KIRAR.placeOrder(address, "Kredi Kartı (Ödendi)", discount);
+        if (res.ok) {
+          KIRAR.showToast('Ödeme başarılı! Siparişiniz alındı.', 'success');
+          setTimeout(() => {
+            window.location.href = 'profilim.html';
+          }, 2000);
+        } else {
+          KIRAR.showToast(res.msg, 'error');
+          btn.disabled = false;
+          btn.innerHTML = 'Ödemeyi Tamamla';
+        }
+      }, 1500);
+    }
+  </script>
+</body>
+
+</html>

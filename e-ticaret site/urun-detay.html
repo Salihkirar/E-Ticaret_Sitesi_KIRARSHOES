@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ürün Detayı | KIRAR SHOES</title>
+  <link rel="shortcut icon" href="images/kirarshoeslogo.png" type="image/png">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="css/kirar.css">
+  <style>
+    .detail-container { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; margin: 40px 0 100px; }
+    .product-gallery { display: flex; flex-direction: column; gap: 16px; }
+    .main-image { width: 100%; aspect-ratio: 4/5; object-fit: cover; border-radius: var(--border-radius-lg); background: #f5f5f5; }
+    .thumbnails { display: flex; gap: 16px; }
+    .thumb { width: 100px; aspect-ratio: 4/5; object-fit: cover; border-radius: var(--border-radius-sm); cursor: pointer; border: 2px solid transparent; transition: 0.2s; }
+    .thumb:hover, .thumb.active { border-color: var(--accent); }
+    
+    .product-info-detail { padding-top: 20px; }
+    .p-brand { font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+    .p-name { font-size: 32px; font-weight: 800; line-height: 1.2; margin-bottom: 16px; }
+    .p-price-wrap { display: flex; align-items: center; gap: 16px; margin-bottom: 32px; }
+    .p-price { font-size: 28px; font-weight: 700; color: var(--accent); }
+    .p-old-price { font-size: 18px; color: var(--text-light); text-decoration: line-through; }
+    
+    .p-desc { color: var(--text-muted); line-height: 1.8; margin-bottom: 32px; font-size: 16px; }
+    
+    .size-selector { margin-bottom: 32px; }
+    .size-header { display: flex; justify-content: space-between; margin-bottom: 12px; font-weight: 600; }
+    .sizes-grid { display: flex; flex-wrap: wrap; gap: 12px; }
+    .size-btn { width: 60px; height: 50px; border: 1px solid var(--border-light); border-radius: var(--border-radius-sm); background: white; font-weight: 600; font-size: 16px; cursor: pointer; transition: 0.2s; }
+    .size-btn:hover { border-color: var(--primary); }
+    .size-btn.active { border-color: var(--accent); background: var(--accent); color: white; }
+    
+    .action-btns { display: flex; gap: 16px; margin-bottom: 40px; }
+    .btn-add { flex: 1; padding: 18px; font-size: 18px; }
+    .btn-fav { width: 60px; height: 60px; border-radius: var(--border-radius-sm); border: 1px solid var(--border-light); background: white; display: flex; align-items: center; justify-content: center; font-size: 24px; cursor: pointer; color: var(--text-muted); transition: 0.2s; }
+    .btn-fav:hover, .btn-fav.active { color: var(--accent); border-color: var(--accent); }
+    
+    @media (max-width: 768px) {
+        .detail-container { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="header">
+    <div class="container header-inner">
+      <a href="index.html" class="logo"><img src="images/kirarshoeslogo.png" alt="KIRAR SHOES"></a>
+      <nav class="nav-links">
+        <a href="index.html">Ana Sayfa</a>
+        <a href="erkek.html">Erkek</a>
+        <a href="kadin.html">Kadın</a>
+        <a href="cocuk.html">Çocuk</a>
+        <a href="giyim.html">Giyim</a>
+      </nav>
+      <div class="nav-actions">
+        <a href="ara.html" class="nav-icon-btn"><span class="material-icons">search</span><span class="nav-lbl">Ara</span></a>
+        <a href="sepet.html" class="nav-icon-btn"><span class="material-icons">shopping_bag</span><span class="nav-lbl">Sepet</span><span class="cart-badge" id="cart-badge">0</span></a>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="detail-container" id="detail-content">
+      <!-- Injected by JS -->
+    </div>
+  </div>
+
+  <script src="js/db.js"></script>
+  <script>
+    let currentProduct = null;
+    let selectedSize = null;
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const productId = parseInt(urlParams.get('id'));
+      
+      const products = KIRAR.getProducts();
+      currentProduct = products.find(p => p.id === productId);
+      
+      if(!currentProduct) {
+        document.getElementById('detail-content').innerHTML = "<h1>Ürün bulunamadı!</h1>";
+        return;
+      }
+      
+      document.title = currentProduct.name + " | KIRAR SHOES";
+      
+      const images = currentProduct.images && currentProduct.images.length > 0 ? currentProduct.images : [currentProduct.image];
+      
+      const isFav = KIRAR.isFavorite(currentProduct.id);
+
+      const html = `
+        <div class="product-gallery">
+          <img src="${images[0]}" class="main-image" id="main-img">
+          <div class="thumbnails">
+            ${images.map((img, i) => `<img src="${img}" class="thumb ${i===0?'active':''}" onclick="changeImg('${img}', this)">`).join('')}
+          </div>
+        </div>
+        <div class="product-info-detail">
+          <div class="p-brand">${currentProduct.brand}</div>
+          <h1 class="p-name">${currentProduct.name}</h1>
+          <div class="product-rating" style="margin-bottom: 24px; font-size:16px;">
+            <span class="stars">${KIRAR.starHtml(currentProduct.rating)}</span>
+            <span class="reviews">(${currentProduct.reviews} Değerlendirme)</span>
+          </div>
+          <div class="p-price-wrap">
+            <span class="p-price">${KIRAR.formatPrice(currentProduct.price)}</span>
+            ${currentProduct.oldPrice ? `<span class="p-old-price">${KIRAR.formatPrice(currentProduct.oldPrice)}</span>` : ''}
+          </div>
+          
+          ${currentProduct.coupon ? `
+          <div class="product-detail-coupon-box" style="background:#fffaf0; border:2px dashed #fbd38d; border-radius:12px; padding:20px; margin-bottom:30px; display:flex; flex-direction:column; gap:8px; box-shadow:0 4px 12px rgba(253,211,141,0.15);">
+            <div style="display:flex; align-items:center; gap:8px; color:#dd6b20; font-weight:800; font-size:15px;">
+              <span class="material-icons" style="font-size:20px;">local_offer</span> BU ÜRÜNDE GEÇERLİ KUPON!
+            </div>
+            <div style="font-size:13px; color:#4a5568; line-height:1.4;">
+              Sepette <strong>%10 ek indirim</strong> kazanmak için ödeme aşamasında aşağıdaki kodu uygulayabilirsiniz.
+            </div>
+            <div style="display:flex; align-items:center; justify-content:space-between; background:white; border:1px solid #e2e8f0; border-radius:8px; padding:8px 12px; margin-top:8px;">
+              <code style="font-family:monospace; font-size:16px; font-weight:700; color:var(--primary); letter-spacing:1px;" id="detail-coupon-code">${currentProduct.coupon}</code>
+              <button onclick="copyCouponCode('${currentProduct.coupon}')" style="background:var(--primary); color:white; border:none; border-radius:6px; padding:6px 14px; font-size:12px; font-weight:600; cursor:pointer; display:flex; align-items:center; gap:4px; transition:0.2s;">
+                <span class="material-icons" style="font-size:14px;">content_copy</span> Kopyala
+              </button>
+            </div>
+          </div>
+          ` : ''}
+          
+          <div class="p-desc">${currentProduct.description}</div>
+          
+          <div class="size-selector">
+            <div class="size-header">
+              <span>Beden/Numara Seçin</span>
+              <a href="#" style="color:var(--text-light); text-decoration:underline;">Beden Tablosu</a>
+            </div>
+            <div class="sizes-grid">
+              ${currentProduct.sizes.map(s => `<button class="size-btn" onclick="selectSize('${s}', this)">${s}</button>`).join('')}
+            </div>
+          </div>
+          
+          <div class="action-btns">
+            <button class="btn-primary btn-add" onclick="handleAddToCart()">Sepete Ekle</button>
+            <button class="btn-fav ${isFav?'active':''}" onclick="KIRAR.toggleFavoriteUI(${currentProduct.id}, this)"><i class="material-icons">favorite</i></button>
+          </div>
+          
+          <div style="border-top: 1px solid var(--border-light); padding-top: 24px; color: var(--text-muted); font-size:14px; line-height: 2;">
+            <div><i class="material-icons" style="font-size:18px; vertical-align:middle;">local_shipping</i> 2000 TL üzeri kargo bedava!</div>
+            <div><i class="material-icons" style="font-size:18px; vertical-align:middle;">replay</i> 30 gün içinde ücretsiz iade</div>
+            <div><i class="material-icons" style="font-size:18px; vertical-align:middle;">verified_user</i> Orijinal ürün garantisi</div>
+          </div>
+        </div>
+      `;
+      
+      document.getElementById('detail-content').innerHTML = html;
+    });
+
+    function copyCouponCode(code) {
+      navigator.clipboard.writeText(code).then(() => {
+        KIRAR.showToast('Kupon kodu kopyalandı: ' + code, 'success');
+      }).catch(err => {
+        KIRAR.showToast('Kupon kopyalanamadı.', 'error');
+      });
+    }
+    
+    function changeImg(src, el) {
+      document.getElementById('main-img').src = src;
+      document.querySelectorAll('.thumb').forEach(t => t.classList.remove('active'));
+      el.classList.add('active');
+    }
+    
+    function selectSize(size, el) {
+      selectedSize = size;
+      document.querySelectorAll('.size-btn').forEach(t => t.classList.remove('active'));
+      el.classList.add('active');
+    }
+    
+    function handleAddToCart() {
+      if(!selectedSize) {
+        KIRAR.showToast('Lütfen beden seçiniz!', 'error');
+        return;
+      }
+      KIRAR.addToCart(currentProduct, selectedSize);
+      KIRAR.showToast('Ürün sepete eklendi!');
+    }
+  </script>
+</body>
+</html>

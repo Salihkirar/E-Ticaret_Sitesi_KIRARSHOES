@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tüm Ürünler | KIRAR SHOES</title>
+  <link rel="shortcut icon" href="images/kirarshoeslogo.png" type="image/png">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="css/kirar.css">
+  <style>
+    .page-header { background: var(--primary); color: white; padding: 60px 0; text-align: center; margin-bottom: 40px; }
+    .page-title { font-size: 36px; font-weight: 800; letter-spacing: -1px; }
+  </style>
+</head>
+<body>
+
+  <header class="header">
+    <div class="container header-inner">
+      <a href="index.html" class="logo"><img src="images/kirarshoeslogo.png" alt="KIRAR SHOES"></a>
+      <nav class="nav-links">
+        <a href="index.html">Ana Sayfa</a>
+        <a href="erkek.html" >Erkek</a>
+        <a href="kadin.html" >Kadın</a>
+        <a href="cocuk.html" >Çocuk</a>
+        <a href="giyim.html" >Giyim</a>
+      </nav>
+      <div class="nav-actions">
+        <a href="ara.html" class="nav-icon-btn"><span class="material-icons">search</span><span class="nav-lbl">Ara</span></a>
+        <a href="favoriler.html" class="nav-icon-btn"><span class="material-icons">favorite_border</span><span class="nav-lbl">Favoriler</span></a>
+        <div id="nav-user"></div>
+        <a href="sepet.html" class="nav-icon-btn"><span class="material-icons">shopping_bag</span><span class="nav-lbl">Sepet</span><span class="cart-badge" id="cart-badge">0</span></a>
+      </div>
+    </div>
+  </header>
+
+  <div class="page-header">
+    <div class="container">
+      <h1 class="page-title">Ürün Ara</h1>
+      <div style="max-width:600px; margin:30px auto 0; display:flex; gap:10px;">
+        <input type="text" id="search-input" class="form-control" placeholder="Ürün adı veya marka ara..." onkeyup="filterProducts()">
+        <select id="category-filter" class="form-control" style="width:200px;" onchange="filterProducts()">
+          <option value="">Tüm Kategoriler</option>
+          <option value="erkek">Erkek</option>
+          <option value="kadin">Kadın</option>
+          <option value="cocuk">Çocuk</option>
+          <option value="giyim">Giyim</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <section class="section" style="padding-top: 0; min-height: 50vh;">
+    <div class="container">
+      <div class="product-grid" id="product-grid">
+        <!-- JS injects here -->
+      </div>
+      <div id="empty-state" style="display:none; text-align:center; padding: 50px; color: var(--text-muted);">
+        <i class="material-icons" style="font-size:48px; margin-bottom:16px;">search_off</i>
+        <h3>Ürün bulunamadı.</h3>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-bottom" style="border-top: none; padding-top: 0;">
+        <div>&copy; 2026 KIRAR SHOES. Tüm hakları saklıdır.</div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/db.js"></script>
+  <script>
+    let allProducts = [];
+    document.addEventListener('DOMContentLoaded', () => {
+      allProducts = KIRAR.getProducts();
+      renderGrid(allProducts);
+    });
+
+    function filterProducts() {
+      const q = document.getElementById('search-input').value.toLowerCase();
+      const cat = document.getElementById('category-filter').value;
+      
+      let filtered = allProducts;
+      if (q) {
+        filtered = filtered.filter(p => p.name.toLowerCase().includes(q) || p.brand.toLowerCase().includes(q));
+      }
+      if (cat) {
+        filtered = filtered.filter(p => p.category === cat);
+      }
+      
+      renderGrid(filtered);
+    }
+
+    function renderGrid(products) {
+      const grid = document.getElementById('product-grid');
+      const empty = document.getElementById('empty-state');
+      grid.innerHTML = '';
+      if(products.length === 0) {
+        grid.style.display = 'none';
+        empty.style.display = 'block';
+      } else {
+        grid.style.display = 'grid';
+        empty.style.display = 'none';
+        products.forEach(p => grid.insertAdjacentHTML('beforeend', KIRAR.productCardHtml(p)));
+      }
+    }
+  </script>
+</body>
+</html>

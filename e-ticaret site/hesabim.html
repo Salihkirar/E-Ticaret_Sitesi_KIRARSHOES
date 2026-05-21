@@ -1,0 +1,159 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Hesabım | FLO</title>
+<link rel="shortcut icon" href="images/flo-logo.svg">
+<link href="css/eticaret.css" type="text/css" rel="stylesheet"/>
+<link href="css/common.css" type="text/css" rel="stylesheet"/>
+<style>
+.hesap-container { max-width: 1100px; margin: 30px auto; padding: 0 20px; font-family: Roboto, sans-serif; }
+.hesap-header { display: flex; align-items: center; gap: 20px; margin-bottom: 30px; padding: 30px; background: linear-gradient(135deg, #ff6600, #ff8533); border-radius: 16px; color: #fff; }
+.hesap-avatar { width: 70px; height: 70px; border-radius: 50%; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; font-size: 28px; font-weight: 700; }
+.hesap-info h2 { margin: 0 0 5px; font-size: 22px; }
+.hesap-info p { margin: 0; opacity: 0.85; font-size: 14px; }
+.hesap-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; }
+.hesap-card { background: #fff; border: 1px solid #eee; border-radius: 14px; padding: 25px; }
+.hesap-card h3 { color: #333; font-size: 18px; margin: 0 0 20px; padding-bottom: 12px; border-bottom: 2px solid #f0f0f0; }
+.hesap-field { margin-bottom: 15px; }
+.hesap-field label { display: block; font-size: 13px; color: #888; margin-bottom: 5px; }
+.hesap-field input { width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; font-family: Roboto, sans-serif; box-sizing: border-box; transition: border 0.2s; }
+.hesap-field input:focus { border-color: #ff6600; outline: none; }
+.hesap-btn { padding: 12px 30px; background: linear-gradient(135deg, #ff6600, #ff8533); color: #fff; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; transition: transform 0.2s; font-family: Roboto, sans-serif; }
+.hesap-btn:hover { transform: translateY(-2px); }
+.hesap-btn-outline { padding: 10px 20px; background: transparent; color: #ff6600; border: 1px solid #ff6600; border-radius: 8px; font-size: 14px; cursor: pointer; text-decoration: none; display: inline-block; font-family: Roboto, sans-serif; transition: background 0.2s; }
+.hesap-btn-outline:hover { background: #fff5ee; }
+.hesap-stat { display: flex; gap: 20px; margin-bottom: 20px; }
+.hesap-stat-item { flex: 1; text-align: center; padding: 15px; background: #f8f9fa; border-radius: 10px; }
+.hesap-stat-item .stat-num { font-size: 24px; font-weight: 700; color: #ff6600; }
+.hesap-stat-item .stat-label { font-size: 12px; color: #888; margin-top: 4px; }
+.cikis-btn { padding: 12px 30px; background: #e53935; color: #fff; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 600; font-family: Roboto, sans-serif; margin-top: 15px; transition: transform 0.2s; text-decoration: none; display: inline-block; }
+.cikis-btn:hover { transform: translateY(-2px); }
+</style>
+</head>
+<body>
+
+<div>
+<!--banner başlanğıç-->
+	<div class="banner_ana">
+	<div class="banner_div_ust">
+   	  <div class="govde">
+	    <a href="/"><div class="banner_logo"><img src="images/flo-logo.svg" height="44px" width="135px"/></div></a>
+		  <a href="/kadin.html"><div class="icon1">Kadın</div></a>
+		  <a href="/erkek.html"><div class="icon2">Erkek</div></a>
+		  <a href="/cocuk.html"><div class="icon3">Çocuk</div></a>
+        <div class="arama_govde">
+		  <div class="arama_buton"><img src="images/arama_iconu.png" width="20" height="20"></div>
+		  <div class="arama_text"><input type="text" name="arama" class="arama_text_nesne"  placeholder="Aradığınız Ürün, Marka veya Kategoriyi Yazınız"/></div>	
+		</div>
+        <a href="/sepet"><div class="icon5"><img src="images/sepetim.png"></div></a>
+      </div>
+    </div>
+</div>
+<!--banner bitiş--> 
+	
+	<div class="hizalama_bitir"></div>
+
+
+<div class="hesap-container">
+    <div class="hesap-header">
+        <div class="hesap-avatar"></div>
+        <div class="hesap-info">
+            <h2> </h2>
+            <p> · Üyelik: </p>
+        </div>
+    </div>
+
+    <div class="hesap-stat">
+        <div class="hesap-stat-item">
+            <div class="stat-num"></div>
+            <div class="stat-label">Toplam Sipariş</div>
+        </div>
+        <div class="hesap-stat-item">
+            <div class="stat-num"></div>
+            <div class="stat-label">Sepetteki Ürün</div>
+        </div>
+        <div class="hesap-stat-item">
+            <div class="stat-num"></div>
+            <div class="stat-label">Hesap Tipi</div>
+        </div>
+    </div>
+
+    <div class="hesap-grid">
+        <div class="hesap-card">
+            <h3>👤 Kişisel Bilgiler</h3>
+            <form action="/hesabim/guncelle" method="POST">
+                <div class="hesap-field">
+                    <label>Ad</label>
+                    <input type="text" name="name" value="">
+                </div>
+                <div class="hesap-field">
+                    <label>Soyad</label>
+                    <input type="text" name="surname" value="">
+                </div>
+                <div class="hesap-field">
+                    <label>Telefon</label>
+                    <input type="tel" name="phone" value="">
+                </div>
+                <div class="hesap-field">
+                    <label>Cinsiyet</label>
+                    <select name="gender" style="width:100%;padding:12px;border:1px solid #ddd;border-radius:8px;font-size:14px;font-family:Roboto,sans-serif;">
+                        <option value="Kadın" selected>Kadın</option>
+                        <option value="Erkek" selected>Erkek</option>
+                    </select>
+                </div>
+                <button type="submit" class="hesap-btn">Bilgileri Güncelle</button>
+            </form>
+        </div>
+
+        <div class="hesap-card">
+            <h3>📦 Son Siparişler</h3>
+            
+                
+                <div style="padding:12px 0;border-bottom:1px solid #f0f0f0;display:flex;justify-content:space-between;align-items:center;">
+                    <div>
+                        <strong style="color:#333;">#</strong>
+                        <br><small style="color:#888;"></small>
+                    </div>
+                    <div style="text-align:right;">
+                        <div style="color:#ff6600;font-weight:700;"> TL</div>
+                        <small style="padding:3px 8px;border-radius:4px;font-size:11px;
+                        background:#e8f5e9;color:#2e7d32;
+                        background:#e3f2fd;color:#1565c0;
+                        background:#fff3e0;color:#e65100;
+                        background:#ffebee;color:#c62828;
+                        background:#f5f5f5;color:#666;"></small>
+                    </div>
+                </div>
+                
+                <div style="margin-top:15px;">
+                    <a href="/siparislerim" class="hesap-btn-outline">Tüm Siparişleri Gör →</a>
+                </div>
+            
+                <p style="color:#888;text-align:center;padding:30px 0;">Henüz siparişiniz bulunmuyor.</p>
+                <a href="/" class="hesap-btn-outline" style="display:block;text-align:center;">Alışverişe Başla</a>
+            
+            
+            <div style="margin-top:25px;padding-top:15px;border-top:2px solid #f0f0f0;">
+                
+                <a href="/admin" class="hesap-btn-outline" style="margin-bottom:10px;display:block;text-align:center;">⚙️ Admin Paneli</a>
+                
+                <a href="/cikis" class="cikis-btn" style="display:block;text-align:center;">🚪 Çıkış Yap</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div style="text-align:center;padding:80px 20px;font-family:Roboto,sans-serif;">
+    <h2 style="color:#333;">Giriş yapmalısınız</h2>
+    <p style="color:#888;">Hesabınıza erişmek için giriş yapın.</p>
+    <a href="/girisyap" class="hesap-btn" style="text-decoration:none;display:inline-block;margin-top:15px;">Giriş Yap</a>
+</div>
+
+
+<div class="bos_div"></div>
+
+</div>
+<script src="js/db.js"></script>
+</body>
+</html>
