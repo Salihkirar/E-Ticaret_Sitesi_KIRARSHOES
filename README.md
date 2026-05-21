@@ -15,15 +15,15 @@ HTML5 - CSS3 - JavaScript - LocalStorage
 
 <h1>Anasayfa</h1>
 
-<img src="C:\Users\salih\OneDrive\Masaüstü\BP\E-Ticaret_Sitesi_KIRARSHOES\e-ticaret site\gifler/anasayfa.gif" class="img-fluid">
+<img src="e-ticaret site\gifler/anasayfa.gif" class="img-fluid">
 
 <h1>Ürün Detay & Kategori Sayfaları</h1>
 
-<img src="C:\Users\salih\OneDrive\Masaüstü\BP\E-Ticaret_Sitesi_KIRARSHOES\e-ticaret site\gifler/detay.gif" class="img-fluid">
+<img src="e-ticaret site\gifler/detay.gif" class="img-fluid">
 
 <h1>Kullanıcı Giriş - Kayıt Sistemi</h1>
 
-<img src="C:\Users\salih\OneDrive\Masaüstü\BP\E-Ticaret_Sitesi_KIRARSHOES\e-ticaret site\gifler/login.gif" class="img-fluid">
+<img src="e-ticaret site\gifler/login.gif" class="img-fluid">
 <h1>Proje Özellikleri</h1>
 
 <h4>
